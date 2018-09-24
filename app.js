@@ -99,11 +99,34 @@ app.get('/users/new', function(req, res) {
     formData: req.flash('formData')[0],
     emailError: req.flash('emailError')[0],
     nicknameError: req.flash('nicknameError')[0],
-    passwordError: req.flash('passwordError')[0]
+    passwordError: req.flash('passwordError')[0],
+    passwordConfigurationError: req.flash('passwordConfigurationError')[0]
   });
 });
 
-app.post('/users', checkUserRegValidation, function(req, res) {
+app.post('/users', function(req, res, next) {
+  var isValid = true;
+  if (req.body.user.email.length === 0) {
+    req.flash('emailError', 'Email is required');
+    isValid = false;
+  }
+  if (req.body.user.nickname.length === 0) {
+    req.flash('nicknameError', 'Nickname is required');
+    isValid = false;
+  }
+  if (req.body.user.password.length === 0) {
+    req.flash('passwordError', 'Password is required');
+    isValid = false;
+  } else if (req.body.user.password != req.body.user.passwordConfiguration) {
+    req.flash('passwordConfigurationError', "Password doesn't match with configuration");
+    isValid = false;
+  }
+  if (!isValid) {
+    req.flash('formData', { email: req.body.user.email, nickname: req.body.user.nickname });
+    res.redirect('/users/new');
+  }
+  else next();
+}, checkUserRegValidation, function(req, res) {
   User.create(req.body.user, function(err, user) {
     if (err) return res.json({ success: false, message: err });
     res.redirect('/login');
@@ -113,7 +136,9 @@ app.post('/users', checkUserRegValidation, function(req, res) {
 app.get('/users/:id', function(req, res) {
   User.findById(req.params.id, function(err, user) {
     if (err) return res.json({ success: false, message: err });
-    res.render('users/show', { user: user });
+    var modifiable = false;
+    if (req.isAuthenticated() && req.user._id == req.params.id) modifiable = true;
+    res.render('users/show', { user: user, modifiable: modifiable });
   });
 });
 
@@ -126,23 +151,44 @@ app.get('/users/:id/edit', function(req, res) {
       formData: req.flash('formData')[0],
       emailError: req.flash('emailError')[0],
       nicknameError: req.flash('nicknameError')[0],
-      passwordError: req.flash('passwordError')[0]
+      passwordError: req.flash('passwordError')[0],
+      newPasswordError: req.flash('newPasswordError')[0],
+      newPasswordConfigurationError: req.flash('newPasswordConfigurationError')[0]
     });
   });
 });
 
-app.put('/users/:id', checkUserRegValidation, function(req, res) {
+app.put('/users/:id', function(req, res, next) {
+  var isValid = true;
+  if (req.body.user.email.length === 0) {
+    req.flash('emailError', 'Email is required');
+    isValid = false;
+  }
+  if (req.body.user.nickname.length === 0) {
+    req.flash('nicknameError', 'Nickname is required');
+    isValid = false;
+  }
+  if (req.body.user.newPassword.length != 0 && req.body.user.newPassword != req.body.user.newPasswordConfiguration) {
+    req.flash('newPasswordConfigurationError', "Password doesn't match with configuration");
+    isValid = false;
+  }
+  if (!isValid) {
+    req.flash('formData', { email: req.body.user.email, nickname: req.body.user.nickname });
+    res.redirect('/users/' + req.params.id + '/edit');
+  }
+  else next();
+}, checkUserRegValidation, function(req, res) {
   User.findById(req.params.id, req.body.user, function(err, user) {
     if (err) return res.json({ success: false, message: err });
     if (req.body.user.password == user.password) {
-      if (req.body.user.newPassword) req.body.user.password = req.body.user.newPassword;
+      if (req.body.user.newPassword.length != 0) req.body.user.password = req.body.user.newPassword;
       else delete req.body.user.password;
       User.findByIdAndUpdate(req.params.id, req.body.user, function(err, user) {
         if (err) return res.json({ success: false, message: err });
         res.redirect('/users/' + req.params.id);
       });
     } else {
-      req.flash('formData', req.body.user);
+      req.flash('formData', { email: req.body.user.email, nickname: req.body.user.nickname });
       req.flash('passwordError', 'Invalid password');
       res.redirect('/users/' + req.params.id + '/edit');
     }
@@ -153,11 +199,7 @@ function checkUserRegValidation(req, res, next) {
   var isValid = true;
   async.waterfall([
     function(callback) {
-      if (req.body.user.email.length === 0) {
-        isValid = false;
-        req.flash('emailError', 'Email is required');
-        callback(null, isValid);
-      } else User.findOne({ email: req.body.user.email, _id: { $ne: mongoose.Types.ObjectId(req.params.id) } },
+      User.findOne({ email: req.body.user.email, _id: { $ne: mongoose.Types.ObjectId(req.params.id) } },
         function(err, user) {
           if (user) {
             isValid = false;
@@ -167,11 +209,7 @@ function checkUserRegValidation(req, res, next) {
         }
       );
     }, function(isValid, callback) {
-      if (req.body.user.nickname.length === 0) {
-        isValid = false;
-        req.flash('nicknameError', 'Nickname is required');
-        callback(null, isValid);
-      } else User.findOne({ nickname: req.body.user.nickname, _id: { $ne: mongoose.Types.ObjectId(req.params.id) } },
+      User.findOne({ nickname: req.body.user.nickname, _id: { $ne: mongoose.Types.ObjectId(req.params.id) } },
         function(err, user) {
           if (user) {
             isValid = false;
@@ -180,26 +218,15 @@ function checkUserRegValidation(req, res, next) {
           callback(null, isValid);
         }
       );
-    }, function(isValud, callback) {
-      if (req.body.user.password.length === 0) {
-        isValid = false;
-        req.flash('passwordError', 'Password is required');
-        callback(null, isValid);
-      } else if (req.body.user.password != req.body.user.passwordConfiguration) {
-        isValid = false;
-        req.flash('passwordError', "Password doesn't match with configuration");
-        callback(null, isValid);
-      }
     }
   ], function(err, isValid) {
     if (err) return res.json({ success: "false", message: err });
     if (isValid) return next();
     else {
-      req.flash('formData', req.body.user);
+      req.flash('formData', { email: req.body.user.email, nickname: req.body.user.nickname });
       res.redirect('back');
     }
   });
-  next();
 }
 
 app.delete('/users/:id', function(req, res) {

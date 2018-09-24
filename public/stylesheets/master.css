@@ -2,7 +2,13 @@
   font-family: 'Roboto', sans-serif;
   margin: 0px;
   padding: 0px;
+  color: #202020;
   outline: none;
+}
+
+.errorInput, .errorInput:active, .errorInput:focus {
+  border: 1.5px solid #D50000;
+  margin: 3.5px;
 }
 
 button:active, input:active, button:focus, input:focus {
@@ -73,7 +79,7 @@ button .ripple, input .ripple {
 .error {
   font-family: 'Roboto', sans-serif;
   font-size: 10px;
-  color: red;
+  color: #D50000;
 }
 
 @keyframes ripple {

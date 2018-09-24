@@ -8,8 +8,8 @@
     <div class='login'>
       <div class='inputcover'>
         <form class='loginForm' action='/login' method='post' id='form1'>
-          <label>Email</label><div><input type='text' name='email' value='<%= email %>'></div>
-          <label>Password</label><input type='text' name='password' value=''>
+          <label>Email</label><input type='text' name='email' value='<%= email %>' class='<%= loginError[0] ? "errorInput" : "" %>'>
+          <label>Password</label><input type='password' name='password' value='' class='<%= loginError[0] ? "errorInput" : "" %>'>
           <% loginError.forEach(function(e) { %>
             <span class='error'><%= e %></span>
           <% }); %>

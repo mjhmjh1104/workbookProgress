@@ -5,22 +5,27 @@
   </head>
   <body>
     <label>Edit</label>
-    <form action='/users/<% user.id %>?_method=put' id='form1'>
+    <form action='/users/<%= user.id %>?_method=put' method='post' id='form1'>
       <div class='inputcover'>
         <label>Email</label>
-        <input type='text' name='user[email]' value='<%= formData ? formData.email : "" %>' />
+        <input type='text' name='user[email]' value='<%= formData ? formData.email : "" %>' class='<%= emailError ? "errorInput" : "" %>' />
         <span class='error'><%= emailError ? emailError : "" %></span>
       </div><div class='inputcover'>
         <label>Nickname</label>
-        <input type='text' name='user[nickname]' value='<%= formData ? formData.nickname : "" %>' />
+        <input type='text' name='user[nickname]' value='<%= formData ? formData.nickname : "" %>' class='<%= nicknameError ? "errorInput" : "" %>' />
         <span class='error'><%= nicknameError ? nicknameError : "" %></span>
       </div><div class='inputcover'>
-        <label>New password</label>
-        <input type='text' name='user[password]' value='' />
+        <label>Password</label>
+        <input type='password' name='user[password]' value='' class='<%= passwordError ? "errorInput" : "" %>' />
         <span class='error'><%= passwordError ? passwordError : "" %></span>
       </div><div class='inputcover'>
-        <label>Password Configuration</label>
-        <input type='text' name='user[passwordConfiguration]' value='' />
+        <label>New Password</label>
+        <input type='password' name='user[newPassword]' value='' class='<%= newPasswordError ? "errorInput" : "" %>'/>
+        <span class='error'><%= newPasswordError ? newPasswordError : "" %></span>
+      </div><div class='inputcover'>
+        <label>New Password Configuration</label>
+        <input type='password' name='user[newPasswordConfiguration]' value='' class='<%= newPasswordConfigurationError ? "errorInput" : "" %>' />
+        <span class='error'><%= newPasswordConfigurationError ? newPasswordConfigurationError : "" %></span>
       </div>
     </form>
     <table>

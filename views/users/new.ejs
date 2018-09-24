@@ -8,19 +8,20 @@
     <form action='/users' method='post' id='form1'>
       <div class='inputcover'>
         <label>Email</label>
-        <input type='text' name='user[email]' value='<%= formData ? formData.email : "" %>' />
+        <input type='text' name='user[email]' value='<%= formData ? formData.email : "" %>' class='<%= emailError ? "errorInput" : "" %>' />
         <span class='error'><%= emailError ? emailError : "" %></span>
       </div><div class='inputcover'>
         <label>Nickname</label>
-        <input type='text' name='user[nickname]' value='<%= formData ? formData.nickname : "" %>' />
+        <input type='text' name='user[nickname]' value='<%= formData ? formData.nickname : "" %>' class='<%= nicknameError ? "errorInput" : "" %>' />
         <span class='error'><%= nicknameError ? nicknameError : "" %></span>
       </div><div class='inputcover'>
         <label>Password</label>
-        <input type='text' name='user[password]' value='' />
+        <input type='password' name='user[password]' value='' class='<%= passwordError ? "errorInput" : "" %>' />
         <span class='error'><%= passwordError ? passwordError : "" %></span>
       </div><div class='inputcover'>
         <label>Password Configuration</label>
-        <input type='text' name='user[passwordConfiguration]' value='' />
+        <input type='password' name='user[passwordConfiguration]' value='' class='<%= passwordConfigurationError ? "errorInput" : "" %>' />
+        <span class='error'><%= passwordConfigurationError ? passwordConfigurationError : "" %></span>
       </div>
     </form>
     <table>
