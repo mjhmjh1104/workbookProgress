@@ -1,15 +1,10 @@
 var inputs = document.getElementsByTagName('input');
 
 Array.prototype.forEach.call(inputs, function(item) {
-  item.addEventListener('click', bottomBorder);
+  item.addEventListener('click', select);
 });
 
-function bottomBorder(e) {
-  var bottom = document.createElement('div');
-
-  bottom.style.left = this.offsetLeft + 'px';
-  bottom.style.top = this.offsetTop + 'px';
-
-  bottom.classList.add('bottomBorder');
-  this.appendChild(bottom);
+function select(e) {
+  this.select();
+  this.setSelectionRange(0, this.value.length);
 }

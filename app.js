@@ -120,6 +120,7 @@ app.get('/users/:id', function(req, res) {
 app.get('/users/:id/edit', function(req, res) {
   User.findById(req.params.id, function(err, user) {
     if (err) return res.json({ success: false, message: err });
+    req.flash('formData', user);
     res.render('users/edit', {
       user: user,
       formData: req.flash('formData')[0],
