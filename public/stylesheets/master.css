@@ -1,0 +1,88 @@
+* {
+  font-family: 'Roboto', sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+button {
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+  text-decoration: none;
+  background-color: white;
+  color: #000000;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  padding: 15px 20px;
+  font-size: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+button:hover, input:hover {
+  background-color: #F4F4F4;
+}
+
+button:focus, input:focus {
+  background-color: #E0E0E0;
+}
+
+button:active, input:active {
+  background-color: #E0E0E0;
+}
+
+label {
+  font-family: 'Roboto', sans-serif;
+}
+
+input {
+  font-family: 'Roboto', sans-serif;
+  border: none;
+  font-size: 15px;
+  padding: 10px;
+  background-color: #FFF;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  margin: 5px;
+  width: calc(100% - 30px);
+  position: relative;
+}
+
+button .ripple, input .ripple {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #000;
+  transform: scale(2.5);
+  opacity: 0.16;
+  position: absolute;
+  animation: ripple 0.4s linear;
+}
+
+.error {
+  font-family: 'Roboto', sans-serif;
+  font-size: 10px;
+  color: red;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 0.16;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+input .bottomBorder {
+  background-color: #000;
+  width: 100%;
+  height: 6px;
+  position: absolute;
+}
