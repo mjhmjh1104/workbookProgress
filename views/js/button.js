@@ -1,8 +1,6 @@
-if (ieVersion() > 9) {
-  Array.prototype.forEach.call(document.getElementsByClassName('rippleItem'), function(item) {
-    item.addEventListener('mousedown', createRipple);
-  });
-}
+if (ieVersion() == -1 || ieVersion() > 8) Array.prototype.forEach.call(document.getElementsByClassName('rippleItem'), function(item) {
+  item.addEventListener('mousedown', createRipple);
+});
 
 function createRipple(e) {
   var circle = document.createElement('div');

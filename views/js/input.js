@@ -1,6 +1,6 @@
 var inputs = document.getElementsByTagName('input');
 
-if (ieVersion() >= 9) Array.prototype.forEach.call(inputs, function(item) {
+if (ieVersion() == -1 || ieVersion() >= 9) Array.prototype.forEach.call(inputs, function(item) {
   item.addEventListener('click', select);
 });
 
