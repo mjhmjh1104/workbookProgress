@@ -4,21 +4,20 @@ if (ieVersion() > 0) {
     ieError.classList += 'ieError';
     ieError.appendChild(document.createTextNode('You\'re using IE ' + ieVersion().toString() + '. IE under 8 is not supported.'));
     document.getElementsByTagName('body')[0].insertBefore(ieError, document.getElementsByTagName('body')[0].childNodes[0]);
-    console.log(ieError);
-  }
-
-  // IE doesn't support HTML5
-  Array.prototype.forEach.call(Array.prototype.slice.call(document.getElementsByTagName('button')).filter(function(item) {
-    return item.getAttribute('form') != null;
-  }), function(item) {
-    item.addEventListener('click', function(e) {
-      Array.prototype.forEach.call(Array.prototype.slice.call(document.getElementsByTagName('form')).filter(function(form) {
-        return form.id == item.getAttribute('form');
-      }), function(item) {
-        item.submit();
+  } else {
+    // IE doesn't support HTML5
+    Array.prototype.forEach.call(Array.prototype.slice.call(document.getElementsByTagName('button')).filter(function(item) {
+      return item.getAttribute('form') != null;
+    }), function(item) {
+      item.addEventListener('click', function(e) {
+        Array.prototype.forEach.call(Array.prototype.slice.call(document.getElementsByTagName('form')).filter(function(form) {
+          return form.id == item.getAttribute('form');
+        }), function(item) {
+          item.submit();
+        });
       });
     });
-  });
+  }
 }
 
 function formFilter(item) {
