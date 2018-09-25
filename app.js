@@ -142,7 +142,7 @@ app.get('/users/:id', function(req, res) {
   });
 });
 
-app.get('/users/:id/edit', function(req, res) {
+app.get('/users/:id/edit', hasEqualId, function(req, res) {
   User.findById(req.params.id, function(err, user) {
     if (err) return res.json({ success: false, message: err });
     req.flash('formData', user);
@@ -158,7 +158,7 @@ app.get('/users/:id/edit', function(req, res) {
   });
 });
 
-app.put('/users/:id', function(req, res, next) {
+app.put('/users/:id', hasEqualId, function(req, res, next) {
   var isValid = true;
   if (req.body.user.email.length === 0) {
     req.flash('emailError', 'Email is required');
@@ -229,12 +229,19 @@ function checkUserRegValidation(req, res, next) {
   });
 }
 
-app.delete('/users/:id', function(req, res) {
+app.delete('/users/:id', hasEqualId, function(req, res) {
   User.findByIdAndRemove(req.params.id, req.body.user, function(err, user) {
     if (err) return res.json({ success: false, message: err });
     res.redirect('/');
   });
-})
+});
+
+function hasEqualId(req, res, next) {
+  if (req.isAuthenticated() && req.user._id == req.params.id) next();
+  else {
+    res.status(403).json({ success: false, message: '403 Forbidden' });
+  }
+}
 
 app.listen(process.env.PORT || 3000, function() {
   console.log('Server on');
