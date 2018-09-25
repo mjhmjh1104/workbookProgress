@@ -1,6 +1,8 @@
-Array.prototype.forEach.call(document.getElementsByClassName('rippleItem'), function(item) {
-  item.addEventListener('mousedown', createRipple);
-});
+if (ieVersion() > 9) {
+  Array.prototype.forEach.call(document.getElementsByClassName('rippleItem'), function(item) {
+    item.addEventListener('mousedown', createRipple);
+  });
+}
 
 function createRipple(e) {
   var circle = document.createElement('div');
@@ -11,8 +13,7 @@ function createRipple(e) {
   circle.style.top = e.clientY - this.offsetTop - radius / 2 + 'px';
   circle.style.opacity = 0;
 
-  if (ieVersion() <= 9) circle.classList += 'ripple';
-  else circle.classList.add('ripple');
+  circle.classList.add('ripple');
   this.appendChild(circle);
 }
 
