@@ -4,6 +4,7 @@ if (ieVersion() > 0) {
     ieError.classList += 'ieError';
     ieError.appendChild(document.createTextNode('You\'re using IE ' + ieVersion().toString() + '. IE under 8 is not supported.'));
     document.getElementsByTagName('body')[0].insertBefore(ieError, document.getElementsByTagName('body')[0].childNodes[0]);
+    console.log(ieError);
   }
 
   // IE doesn't support HTML5
