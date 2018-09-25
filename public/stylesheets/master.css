@@ -99,3 +99,14 @@ input .bottomBorder {
   height: 6px;
   position: absolute;
 }
+
+.ieError {
+  width: 100%;
+  height: 20px;
+  background-color: #D50000;
+  color: #FFF;
+  text-align: center;
+  font-size: 10px;
+  padding: auto;
+  line-height: 20px;
+}
