@@ -1,3 +1,4 @@
+console.log(typeof Array.prototype.forEach);
 if (typeof Array.prototype.forEach != 'function') {
   Array.prototype.forEach = function(callback) {
     for (var i = 0; i < this.length; i++) {
