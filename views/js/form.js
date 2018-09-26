@@ -1,7 +1,7 @@
 if (ieVersion() > 0) {
   var ieError = document.createElement('div');
   if (ieVersion() <= 8) {
-    ieError.classList += 'ieError';
+    ieError.className += 'ieError';
     ieError.appendChild(document.createTextNode('You\'re using IE ' + ieVersion().toString() + '. IE under 8 is not supported.'));
     document.getElementsByTagName('body')[0].insertBefore(ieError, document.getElementsByTagName('body')[0].childNodes[0]);
   } else {
