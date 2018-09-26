@@ -1,4 +1,3 @@
-console.log(typeof Array.prototype.forEach);
 if (typeof Array.prototype.forEach != 'function') {
   Array.prototype.forEach = function(callback) {
     for (var i = 0; i < this.length; i++) {
@@ -7,7 +6,8 @@ if (typeof Array.prototype.forEach != 'function') {
   }
 }
 
-Array.prototype.forEach.call(document.getElementsByClassName('rippleItem'), function(item) {
+Array.prototype.forEach.call(
+  document.getElementsByClassName('rippleItem'), function(item) {
   item.addEventListener('mousedown', createRipple);
 });
 

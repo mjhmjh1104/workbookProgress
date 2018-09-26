@@ -13,13 +13,19 @@ if (ieVersion() > 0) {
       }
     }
   }
-  
+
     // IE doesn't support HTML5
-  Array.prototype.forEach.call(Array.prototype.slice.call(document.getElementsByTagName('button')).filter(function(item) {
+  Array.prototype.forEach.call(
+    Array.prototype.slice.call(
+      document.getElementsByTagName('button'))
+      .filter(function(item) {
     return item.getAttribute('form') != null;
   }), function(item) {
     item.addEventListener('click', function(e) {
-      Array.prototype.forEach.call(Array.prototype.slice.call(document.getElementsByTagName('form')).filter(function(form) {
+      Array.prototype.forEach.call(
+        Array.prototype.slice.call(
+          document.getElementsByTagName('form'))
+          .filter(function(form) {
         return form.id == item.getAttribute('form');
       }), function(item) {
         item.submit();
