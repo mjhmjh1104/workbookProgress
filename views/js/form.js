@@ -5,6 +5,15 @@ if (ieVersion() > 0) {
     ieError.appendChild(document.createTextNode('You\'re using IE ' + ieVersion().toString() + '. IE under 8 is not supported.'));
     document.getElementsByTagName('body')[0].insertBefore(ieError, document.getElementsByTagName('body')[0].childNodes[0]);
   }
+
+  if (typeof Array.prototype.forEach != 'function') {
+    Array.prototype.forEach = function(callback) {
+      for (var i = 0; i < this.length; i++) {
+        callback.apply(this, [this[i], i, this]);
+      }
+    }
+  }
+  
     // IE doesn't support HTML5
   Array.prototype.forEach.call(Array.prototype.slice.call(document.getElementsByTagName('button')).filter(function(item) {
     return item.getAttribute('form') != null;

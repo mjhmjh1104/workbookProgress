@@ -1,4 +1,12 @@
-if (ieVersion() == -1 || ieVersion() > 8) Array.prototype.forEach.call(document.getElementsByClassName('rippleItem'), function(item) {
+if (typeof Array.prototype.forEach != 'function') {
+  Array.prototype.forEach = function(callback) {
+    for (var i = 0; i < this.length; i++) {
+      callback.apply(this, [this[i], i, this]);
+    }
+  }
+}
+
+Array.prototype.forEach.call(document.getElementsByClassName('rippleItem'), function(item) {
   item.addEventListener('mousedown', createRipple);
 });
 
